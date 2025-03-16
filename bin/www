@@ -4,6 +4,8 @@
  * Module dependencies.
  */
 
+global.db = require('../db');
+
 var app = require('../app');
 var debug = require('debug')('codelab:server');
 var http = require('http');
