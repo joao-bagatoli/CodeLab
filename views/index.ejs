@@ -1,13 +1,55 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title>CodeLab</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <div class="flex min-h-screen flex-col items-center justify-center bg-slate-950 p-4">
+      <div class="card w-full max-w-md bg-slate-900 text-white">
+        <form action="/login" method="post" class="card-body">
+          <div class="flex items-center justify-center gap-2">
+            <span>Icone</span>
+            <span class="text-2xl font-bold text-emerald-500">
+              CodeLab
+            </span>
+          </div>
+          <span class="text-center text-slate-400">
+            Insira suas credenciais para acessar sua conta
+          </span>
+          <div>
+            <fieldset class="fieldset mt-2">
+              <legend class="text-sm font-medium text-slate-200">
+                Email
+              </legend>
+              <input type="email" name="email" placeholder="mail@site.com" class="input border-slate-700 bg-slate-800 text-white placeholder:text-slate-500 w-full" required/>
+            </fieldset>
+            <fieldset class="fieldset mt-2">
+              <div class="flex justify-between items-center">
+                <legend class="text-sm font-medium text-slate-200">
+                  Senha
+                </legend>
+                <a href="" class="text-xs text-emerald-500 hover:underline">
+                  Esqueceu a senha?
+                </a>
+              </div>
+              <input type="password" name="password" class="input border-slate-700 bg-slate-800 text-white w-full" required/>
+            </fieldset>
+          </div>
+          <button type="submit" class="btn btn-block bg-emerald-600 hover:bg-emerald-700 mt-2">
+            Entrar
+          </button>
+          <div class="text-center text-sm text-slate-400 mt-1">
+            <span>Não possui uma conta?</span>
+            <a href="" class="text-emerald-500 hover:underline">Inscrever-se</a>
+          </div>
+        </form>
+      </div>
+    </div>
   </body>
 </html>
