@@ -6,6 +6,13 @@ class AccountService {
         if (!rows) return null;
         return rows[0];
     }
+
+    async createAsync(name, email, password) {
+        const connection = await global.db.connectDbAsync();
+        const query = "INSERT INTO users (user_name, user_email, user_password) VALUES (?, ?, ?)";
+        const [result] = await connection.query(query, [name, email, password]);
+        return result;
+    }
 }
 
 module.exports = new AccountService();

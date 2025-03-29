@@ -13,7 +13,7 @@
   <body>
     <div class="flex min-h-screen flex-col items-center justify-center bg-slate-950 p-4">
       <div class="card w-full max-w-md bg-slate-900 text-white">
-        <form action="/account/login" method="post" class="card-body">
+        <form action="/account/create" method="post" class="card-body">
           <div class="flex items-center justify-center gap-2">
             <i class="fa-solid fa-code text-emerald-500" style="font-size: 20px;"></i>
             <span class="text-2xl font-bold text-emerald-500">
@@ -21,33 +21,40 @@
             </span>
           </div>
           <span class="text-center text-slate-400">
-            Insira suas credenciais para acessar sua conta
+            Crie uma conta para começar a resolver desafios
           </span>
           <div>
             <fieldset class="fieldset mt-2">
               <legend class="text-sm font-medium text-slate-200">
-                Email
+                Nome
               </legend>
-              <input type="email" name="email" class="input border-slate-700 bg-slate-800 text-white placeholder:text-slate-500 w-full" required/>
+              <input type="text" name="name" class="input border-slate-700 bg-slate-800 text-white placeholder:text-slate-500 w-full" required/>
             </fieldset>
             <fieldset class="fieldset mt-2">
-              <div class="flex justify-between items-center">
+                <legend class="text-sm font-medium text-slate-200">
+                  Email
+                </legend>
+                <input type="email" name="email" class="input border-slate-700 bg-slate-800 text-white placeholder:text-slate-500 w-full" required/>
+            </fieldset>
+            <fieldset class="fieldset mt-2">
                 <legend class="text-sm font-medium text-slate-200">
                   Senha
                 </legend>
-                <a href="" class="text-xs text-emerald-500 hover:underline">
-                  Esqueceu a senha?
-                </a>
-              </div>
-              <input type="password" name="password" class="input border-slate-700 bg-slate-800 text-white w-full" required/>
+                <input type="password" name="password" class="input border-slate-700 bg-slate-800 text-white placeholder:text-slate-500 w-full" required/>
+            </fieldset>
+            <fieldset class="fieldset mt-2">
+                <legend class="text-sm font-medium text-slate-200">
+                  Confirmar senha
+                </legend>
+                <input type="password" name="confirmPassword" class="input border-slate-700 bg-slate-800 text-white placeholder:text-slate-500 w-full" required/>
             </fieldset>
           </div>
           <button type="submit" class="btn bg-emerald-600 hover:bg-emerald-700 mt-2">
-            Entrar
+            Criar conta
           </button>
           <div class="text-center text-sm text-slate-400 mt-1">
-            <span>Não possui uma conta?</span>
-            <a href="/signUp" class="text-emerald-500 hover:underline">Inscrever-se</a>
+            <span>Já possui uma conta?</span>
+            <a href="/" class="text-emerald-500 hover:underline">Entrar</a>
           </div>
         </form>
       </div>
