@@ -1,5 +1,7 @@
-const service = require('../services/accountService');
+const accountService = require('../services/accountService');
+const emailService = require('../utils/emailService');
 const statusCodes  = require('../utils/statusCodes');
+const { generateResetToken } = require('../utils/tokenUtil');
 
 class AccountController {
     static async login(req, res) {
@@ -10,7 +12,7 @@ class AccountController {
                 return res.status(statusCodes.BAD_REQUEST).json({ message: 'Email e senha não podem ser vazios' });
             }
 
-            const user = await service.loginAsync(email, password);
+            const user = await accountService.loginAsync(email, password);
 
             if (!user) {
                 return res.status(statusCodes.UNAUTHORIZED).json({ message: 'Email ou senha inválidos' });
@@ -34,7 +36,7 @@ class AccountController {
                 return res.status(statusCodes.BAD_REQUEST).json({ message: 'As senhas não coincidem' });
             }
     
-            const result = await service.createAsync(name, email, password);
+            const result = await accountService.createAsync(name, email, password);
     
             if (result.insertId) {
                 return res.redirect('/');
@@ -43,6 +45,36 @@ class AccountController {
             return res.status(statusCodes.InternalServerError).json({ message: 'Falha ao criar usuário' });
         } catch {
             res.status(statusCodes.InternalServerError).json({ message: 'Erro ao criar conta' });
+        }
+    }
+
+    static async forgotPassword(req, res) {
+        try {
+            const { email } = req.body;
+
+            if (!email) {
+                return res.status(statusCodes.BAD_REQUEST).json({ message: 'Email não pode ser vazio' });
+            }
+
+            const user = await accountService.getUserByEmailAsync(email);
+
+            if (!user) {
+                return res.status(statusCodes.NOT_FOUND).json({ message: 'Email não encontrado' });
+            }
+
+            const token = generateResetToken();
+            const ONE_HOUR_IN_MS = 3600000;
+            const expiration = new Date(Date.now() + ONE_HOUR_IN_MS);
+
+            await accountService.savePasswordResetTokenAsync(user.user_id, token, expiration);
+
+            const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+
+            await emailService.sendResetEmailAsync(email, resetLink);
+
+            return res.json({ message: 'Link de recuperação enviado para o email' });
+        } catch {
+            res.status(statusCodes.InternalServerError).json({ message: 'Erro ao enviar link de redefinição' });
         }
     }
 }

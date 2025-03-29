@@ -13,6 +13,19 @@ class AccountService {
         const [result] = await connection.query(query, [name, email, password]);
         return result;
     }
+
+    async getUserByEmailAsync(email) {
+        const connection = await global.db.connectDbAsync();
+        const query = "SELECT * from users WHERE user_email = ?";
+        const [row] = await connection.query(query, [email]);
+        return row[0];
+    }
+
+    async savePasswordResetTokenAsync(userId, token, expiration) {
+        const connection = await global.db.connectDbAsync();
+        const query = "UPDATE users SET reset_token = ?, reset_token_expiration = ? WHERE user_id = ?";
+        await connection.query(query, [token, expiration, userId]);
+    }
 }
 
 module.exports = new AccountService();

@@ -5,8 +5,12 @@ router.get('/', function(req, res) {
   res.render('index');
 });
 
-router.get('/signUp', function(req, res) {
+router.get('/sign-up', function(req, res) {
   res.render('signUp');
+});
+
+router.get('/forgot-password', function(req, res) {
+  res.render('forgotPassword');
 });
 
 router.get('/home', function(req, res) {
