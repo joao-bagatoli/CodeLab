@@ -77,6 +77,44 @@ class AccountController {
             res.status(statusCodes.InternalServerError).json({ message: 'Erro ao enviar link de redefinição' });
         }
     }
+
+    static async resetPassword(req, res) {
+        try {
+            const { token } = req.query;
+            const { newPassword, confirmNewPassword } = req.body;
+
+            if (!token) {
+                return res.status(statusCodes.BAD_REQUEST).json({ message: 'Token não deve ser nulo' });
+            }
+
+            if (!newPassword || !confirmNewPassword) {
+                return res.status(statusCodes.BAD_REQUEST).json({ message: 'Campos devem ser preenchidos' });
+            }
+
+            if (newPassword !== confirmNewPassword) {
+                return res.status(statusCodes.BAD_REQUEST).json({ message: 'As senhas não coincidem' });
+            }
+
+            const user = await accountService.getUserByTokenAsync(token);
+
+            if (!user) {
+                return res.status(statusCodes.BAD_REQUEST).json({ message: 'Token inválido' });
+            }
+
+            const isTokenExpired = new Date(user.reset_token_expiration) < new Date();
+
+            if (isTokenExpired) {
+                return res.status(statusCodes.BAD_REQUEST).json({ message: 'Token expirado' });
+            }
+
+            await accountService.updatePasswordAsync(user.user_id, newPassword);
+            await accountService.invalidateTokenAsync(user.user_id);
+
+            return res.redirect('/password-reset-success');
+        } catch {
+            res.status(statusCodes.InternalServerError).json({ message: 'Erro ao redefinir senha' });
+        }
+    }
 }
 
 module.exports = AccountController;
