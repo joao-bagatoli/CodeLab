@@ -18,6 +18,12 @@ class AccountController {
                 return res.status(statusCodes.UNAUTHORIZED).json({ message: 'Email ou senha inválidos' });
             }
 
+            req.session.user = {
+                id: user.user_id,
+                name: user.user_name,
+                email: user.user_email
+            };
+
             res.redirect('/home');
         } catch {
             res.status(statusCodes.INTERNAL_SEVER_ERROR).json({ message: 'Erro ao realizar login' });
