@@ -1,4 +1,4 @@
-const statusCodes = Object.freeze({
+module.exports = Object.freeze({
     OK: 200,
     CREATED: 201,
     NO_CONTENT: 204,
@@ -8,5 +8,3 @@ const statusCodes = Object.freeze({
     NOT_FOUND: 404,
     INTERNAL_SEVER_ERROR: 500
 });
-
-module.exports = statusCodes;
