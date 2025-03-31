@@ -21,6 +21,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+  secret: 'chave-secreta-super-segura',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false } // true if it's using https
+}));
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/account', accountRouter);
@@ -40,12 +47,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-app.use(session({
-  secret: 'chave-secreta-super-segura',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false } // true if it's using https
-}));
 
 module.exports = app;
