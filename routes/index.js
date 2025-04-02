@@ -22,8 +22,16 @@ router.get('/password-reset-success', function(req, res) {
   res.render('passwordResetSuccess');
 });
 
-router.get('/home', authMiddleware, function(req, res) {
-  res.render('home', { user: req.session.user });
+router.get('/challenges', authMiddleware, function(req, res) {
+  res.render('challenges', { user: req.session.user });
+});
+
+router.get('/my-challenges', authMiddleware, function(req, res) {
+  res.render('myChallenges', { user: req.session.user });
+});
+
+router.get('/ranking', authMiddleware, function(req, res) {
+  res.render('ranking', { user: req.session.user });
 });
 
 module.exports = router;

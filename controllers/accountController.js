@@ -24,7 +24,7 @@ class AccountController {
                 email: user.user_email
             };
 
-            res.redirect('/home');
+            res.redirect('/challenges');
         } catch {
             res.status(statusCodes.INTERNAL_SEVER_ERROR).json({ message: 'Erro ao realizar login' });
         }
