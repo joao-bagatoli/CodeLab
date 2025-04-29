@@ -26,7 +26,7 @@ class AccountController {
 
             res.redirect('/challenges');
         } catch {
-            res.status(statusCodes.INTERNAL_SEVER_ERROR).json({ message: 'Erro ao realizar login' });
+            res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Erro ao realizar login' });
         }
     }
 
@@ -48,9 +48,9 @@ class AccountController {
                 return res.redirect('/');
             }
 
-            return res.status(statusCodes.INTERNAL_SEVER_ERROR).json({ message: 'Falha ao criar usuário' });
+            return res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Falha ao criar usuário' });
         } catch {
-            res.status(statusCodes.INTERNAL_SEVER_ERROR).json({ message: 'Erro ao criar conta' });
+            res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Erro ao criar conta' });
         }
     }
 
@@ -80,7 +80,7 @@ class AccountController {
 
             return res.json({ message: 'Link de recuperação enviado para o email' });
         } catch {
-            res.status(statusCodes.INTERNAL_SEVER_ERROR).json({ message: 'Erro ao enviar link de redefinição' });
+            res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Erro ao enviar link de redefinição' });
         }
     }
 
@@ -118,7 +118,7 @@ class AccountController {
 
             return res.redirect('/password-reset-success');
         } catch {
-            res.status(statusCodes.INTERNAL_SEVER_ERROR).json({ message: 'Erro ao redefinir senha' });
+            res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Erro ao redefinir senha' });
         }
     }
 }
