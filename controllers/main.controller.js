@@ -122,6 +122,12 @@ class MainController {
             return res.render('resetPassword', { error: 'Erro ao redefinir senha' });
         }
     }
+
+    static logout(req, res) {
+        req.session.destroy(() => {
+            res.redirect('/');
+        });
+    }
 }
 
 module.exports = MainController;

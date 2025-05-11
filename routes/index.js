@@ -30,4 +30,6 @@ router.get('/password-reset-success', function(req, res) {
   res.render('passwordResetSuccess');
 });
 
+router.get('/logout', mainController.logout);
+
 module.exports = router;

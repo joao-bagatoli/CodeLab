@@ -32,8 +32,13 @@
                 </nav>
             </div>
             <div class="flex items-center gap-4">
-                <div class="relative flex shrink-0 overflow-hidden rounded-full h-8 w-8">
-                    <img src="https://th.bing.com/th/id/OIP.Kk4i-k-7bOfsgPv0SJtj5AHaHa?rs=1&pid=ImgDetMain" class="aspect-square h-full w-full" alt="User Profile">
+                <div class="dropdown dropdown-bottom">
+                    <div tabindex="0" role="button" class="overflow-hidden rounded-full h-8 w-8">
+                        <span id="avatar" class="flex items-center justify-center w-full h-full font-bold text-sm"></span>
+                    </div>
+                    <ul tabindex="0" class="dropdown-content menu bg-base-100 text-slate-400 rounded-box z-1 mt-2 w-40 p-2 shadow-sm">
+                        <li><a href="/logout">Sair</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -41,5 +46,16 @@
     <main>
         Meus Desafios
     </main>
+        <script type="module">
+        import { getInitials, getColorFromInitials } from '/javascript/avatar.js';
+
+        const userName = '<%= user.name %>';
+        const initials = getInitials(userName);
+        const bgColor = getColorFromInitials(initials);
+
+        const avatar = document.getElementById('avatar');
+        avatar.textContent = initials;
+        avatar.classList.add(bgColor);
+    </script>
   </body>
 </html>
