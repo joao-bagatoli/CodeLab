@@ -1,9 +1,9 @@
-const accountService = require('../services/accountService');
+const mainService = require('../services/main.service');
 const emailService = require('../utils/emailService');
 const statusCodes  = require('../utils/statusCodes');
 const { generateResetToken } = require('../utils/tokenUtil');
 
-class AccountController {
+class MainController {
     static async login(req, res) {
         try {
             const { email, password } = req.body;
@@ -12,7 +12,7 @@ class AccountController {
                 return res.status(statusCodes.BAD_REQUEST).json({ message: 'Email e senha não podem ser vazios' });
             }
 
-            const user = await accountService.loginAsync(email, password);
+            const user = await mainService.loginAsync(email, password);
 
             if (!user) {
                 return res.status(statusCodes.UNAUTHORIZED).json({ message: 'Email ou senha inválidos' });
@@ -30,7 +30,7 @@ class AccountController {
         }
     }
 
-    static async create(req, res) {
+    static async signUp(req, res) {
         try {
             const { name, email, password, confirmPassword } = req.body;
 
@@ -42,7 +42,7 @@ class AccountController {
                 return res.status(statusCodes.BAD_REQUEST).json({ message: 'As senhas não coincidem' });
             }
     
-            const result = await accountService.createAsync(name, email, password);
+            const result = await mainService.createAsync(name, email, password);
     
             if (result.insertId) {
                 return res.redirect('/');
@@ -62,7 +62,7 @@ class AccountController {
                 return res.status(statusCodes.BAD_REQUEST).json({ message: 'Email não pode ser vazio' });
             }
 
-            const user = await accountService.getUserByEmailAsync(email);
+            const user = await mainService.getUserByEmailAsync(email);
 
             if (!user) {
                 return res.status(statusCodes.NOT_FOUND).json({ message: 'Email não encontrado' });
@@ -72,7 +72,7 @@ class AccountController {
             const ONE_HOUR_IN_MS = 3600000;
             const expiration = new Date(Date.now() + ONE_HOUR_IN_MS);
 
-            await accountService.savePasswordResetTokenAsync(user.user_id, token, expiration);
+            await mainService.savePasswordResetTokenAsync(user.user_id, token, expiration);
 
             const resetLink = `http://localhost:3000/reset-password?token=${token}`;
 
@@ -101,7 +101,7 @@ class AccountController {
                 return res.status(statusCodes.BAD_REQUEST).json({ message: 'As senhas não coincidem' });
             }
 
-            const user = await accountService.getUserByTokenAsync(token);
+            const user = await mainService.getUserByTokenAsync(token);
 
             if (!user) {
                 return res.status(statusCodes.BAD_REQUEST).json({ message: 'Token inválido' });
@@ -113,8 +113,8 @@ class AccountController {
                 return res.status(statusCodes.BAD_REQUEST).json({ message: 'Token expirado' });
             }
 
-            await accountService.updatePasswordAsync(user.user_id, newPassword);
-            await accountService.invalidateTokenAsync(user.user_id);
+            await mainService.updatePasswordAsync(user.user_id, newPassword);
+            await mainService.invalidateTokenAsync(user.user_id);
 
             return res.redirect('/password-reset-success');
         } catch {
@@ -123,4 +123,4 @@ class AccountController {
     }
 }
 
-module.exports = AccountController;
+module.exports = MainController;

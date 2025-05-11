@@ -1,4 +1,4 @@
-class AccountService {
+class MainService {
     async loginAsync(email, password) {
         const connection = await global.db.connectDbAsync();
         const query = "SELECT * FROM users WHERE user_email = ? AND user_password = ?";
@@ -46,4 +46,4 @@ class AccountService {
     }
 }
 
-module.exports = new AccountService();
+module.exports = new MainService();
