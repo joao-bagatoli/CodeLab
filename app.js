@@ -10,6 +10,11 @@ var challengesRouter = require('./routes/challenges');
 var myChallengesRouter = require('./routes/myChallenges');
 var rankingRouter = require('./routes/ranking');
 
+var adminDashboardRouter = require('./routes/admin/dashboard');
+var adminUsersRouter = require('./routes/admin/users');
+var adminChallengesRouter = require('./routes/admin/challenges');
+var adminCategoriesRouter = require('./routes/admin/categories');
+
 var app = express();
 
 // view engine setup
@@ -33,6 +38,11 @@ app.use('/', indexRouter);
 app.use('/challenges', challengesRouter);
 app.use('/my-challenges', myChallengesRouter);
 app.use('/ranking', rankingRouter);
+
+app.use('/admin/dashboard', adminDashboardRouter);
+app.use('/admin/users', adminUsersRouter);
+app.use('/admin/challenges', adminChallengesRouter);
+app.use('/admin/categories', adminCategoriesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

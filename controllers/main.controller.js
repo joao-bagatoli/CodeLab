@@ -1,6 +1,5 @@
 const mainService = require('../services/main.service');
 const emailService = require('../utils/emailService');
-const statusCodes  = require('../utils/statusCodes');
 const { generateResetToken } = require('../utils/tokenUtil');
 
 class MainController {
@@ -9,24 +8,26 @@ class MainController {
             const { email, password } = req.body;
 
             if (!email || !password) {
-                return res.status(statusCodes.BAD_REQUEST).json({ message: 'Email e senha não podem ser vazios' });
+                return res.render('index', { error: 'Email e senha não podem ser vazios' });
             }
 
             const user = await mainService.loginAsync(email, password);
 
             if (!user) {
-                return res.status(statusCodes.UNAUTHORIZED).json({ message: 'Email ou senha inválidos' });
+                return res.render('index', { error: 'Credenciais inválidas' });
             }
 
             req.session.user = {
                 id: user.user_id,
                 name: user.user_name,
-                email: user.user_email
+                email: user.user_email,
+                isAdmin: user.user_admin == 1
             };
 
-            res.redirect('/challenges');
+            const redirectTo = user.user_admin == 1 ? '/admin/dashboard' : '/challenges';
+            res.redirect(redirectTo);
         } catch {
-            res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Erro ao realizar login' });
+            return res.render('index', { error: 'Erro ao realizar login' });
         }
     }
 
@@ -35,22 +36,22 @@ class MainController {
             const { name, email, password, confirmPassword } = req.body;
 
             if (!name || !email || !password || !confirmPassword) {
-                return res.status(statusCodes.BAD_REQUEST).json({ message: 'Campos devem ser preenchidos' });
+                return res.render('signUp', { error: 'Campos devem ser preenchidos' });
             }
     
             if (password !== confirmPassword) {
-                return res.status(statusCodes.BAD_REQUEST).json({ message: 'As senhas não coincidem' });
+                return res.render('signUp', { error: 'As senhas não coincidem' });
             }
     
-            const result = await mainService.createAsync(name, email, password);
+            const result = await mainService.signUpAsync(name, email, password);
     
             if (result.insertId) {
                 return res.redirect('/');
             }
 
-            return res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Falha ao criar usuário' });
+            return res.render('signUp', { error: 'Falha ao criar usuário' });
         } catch {
-            res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Erro ao criar conta' });
+            return res.render('signUp', { error: 'Erro ao criar conta' });
         }
     }
 
@@ -59,13 +60,13 @@ class MainController {
             const { email } = req.body;
 
             if (!email) {
-                return res.status(statusCodes.BAD_REQUEST).json({ message: 'Email não pode ser vazio' });
+                return res.render('forgotPassword', { error: 'Email não pode ser vazio', success: null });
             }
 
             const user = await mainService.getUserByEmailAsync(email);
 
             if (!user) {
-                return res.status(statusCodes.NOT_FOUND).json({ message: 'Email não encontrado' });
+                return res.render('forgotPassword', { error: 'Email não encontrado', success: null });
             }
 
             const token = generateResetToken();
@@ -78,9 +79,9 @@ class MainController {
 
             await emailService.sendResetEmailAsync(email, resetLink);
 
-            return res.json({ message: 'Link de recuperação enviado para o email' });
+            return res.render('forgotPassword', { error: null, success: 'Link de recuperação enviado para o email' });
         } catch {
-            res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Erro ao enviar link de redefinição' });
+            return res.render('forgotPassword', { error: 'Erro ao enviar link de redefinição', success: null });
         }
     }
 
@@ -90,27 +91,27 @@ class MainController {
             const { newPassword, confirmNewPassword } = req.body;
 
             if (!token) {
-                return res.status(statusCodes.BAD_REQUEST).json({ message: 'Token não deve ser nulo' });
+                return res.render('resetPassword', { error: 'Token não deve ser nulo' });
             }
 
             if (!newPassword || !confirmNewPassword) {
-                return res.status(statusCodes.BAD_REQUEST).json({ message: 'Campos devem ser preenchidos' });
+                return res.render('resetPassword', { error: 'Campos devem ser preenchidos' });
             }
 
             if (newPassword !== confirmNewPassword) {
-                return res.status(statusCodes.BAD_REQUEST).json({ message: 'As senhas não coincidem' });
+                return res.render('resetPassword', { error: 'As senhas não coincidem' });
             }
 
             const user = await mainService.getUserByTokenAsync(token);
 
             if (!user) {
-                return res.status(statusCodes.BAD_REQUEST).json({ message: 'Token inválido' });
+                return res.render('resetPassword', { error: 'Token inválido' });
             }
 
             const isTokenExpired = new Date(user.reset_token_expiration) < new Date();
 
             if (isTokenExpired) {
-                return res.status(statusCodes.BAD_REQUEST).json({ message: 'Token expirado' });
+                return res.render('resetPassword', { error: 'Token expirado' });
             }
 
             await mainService.updatePasswordAsync(user.user_id, newPassword);
@@ -118,7 +119,7 @@ class MainController {
 
             return res.redirect('/password-reset-success');
         } catch {
-            res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Erro ao redefinir senha' });
+            return res.render('resetPassword', { error: 'Erro ao redefinir senha' });
         }
     }
 }
