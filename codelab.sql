@@ -49,16 +49,13 @@ CREATE TABLE `challenges` (
   `challenge_id` int(11) NOT NULL AUTO_INCREMENT,
   `challenge_title` varchar(30) DEFAULT NULL,
   `challenge_description` varchar(30) DEFAULT NULL,
-  `challenge_difficulty` varchar(30) DEFAULT NULL,
-  `category_id` int(11) DEFAULT NULL,
+  `challenge_difficulty` enum('easy','medium','hard') DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `created_at` date DEFAULT NULL,
   PRIMARY KEY (`challenge_id`),
-  KEY `category_id` (`category_id`),
   KEY `created_by` (`created_by`),
-  CONSTRAINT `challenges_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`),
   CONSTRAINT `challenges_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,6 +64,7 @@ CREATE TABLE `challenges` (
 
 LOCK TABLES `challenges` WRITE;
 /*!40000 ALTER TABLE `challenges` DISABLE KEYS */;
+INSERT INTO `challenges` VALUES (3,'Arrow Function','Substituir função anônima por ','medium',1,'2025-05-11'),(4,'Lista e Coleções','                    ','easy',1,'2025-05-11'),(5,'Async/Await','Lidar com operações assincrona','hard',1,'2025-05-11');
 /*!40000 ALTER TABLE `challenges` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,8 +171,9 @@ CREATE TABLE `users` (
   `user_name` varchar(30) DEFAULT NULL,
   `reset_token` varchar(30) DEFAULT NULL,
   `reset_token_expiration` date DEFAULT NULL,
+  `user_admin` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,7 +182,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'joao@gmail.com','123',NULL,NULL,NULL),(2,'testUser@gmail.com','123','test user',NULL,NULL),(3,'larissa@gmail.com','123','larissa',NULL,NULL),(4,'james@email.com','123','james',NULL,NULL),(5,'wedley@email.com','123','wedley',NULL,NULL);
+INSERT INTO `users` VALUES (1,'joao@gmail.com','123','joao bagatoli',NULL,NULL,1),(2,'testUser@gmail.com','123','test user',NULL,NULL,0),(3,'larissa@gmail.com','123','larissa',NULL,NULL,0),(4,'james@email.com','123','james',NULL,NULL,0),(5,'wedley@email.com','123','wedley',NULL,NULL,0),(6,'guilherme@gmail.com','123','Guilherme',NULL,NULL,0),(7,'max@email.com','123','max','9c6f6ca06bd26369798beb9aa3b2a6','2025-05-11',0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -196,4 +195,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-05 21:35:18
+-- Dump completed on 2025-05-11 22:26:54
