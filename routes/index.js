@@ -3,6 +3,14 @@ var router = express.Router();
 const mainController = require('../controllers/main.controller');
 
 router.get('/', function(req, res) {
+  if (req.session.user) {
+    if (req.session.user.isAdmin) {
+      return res.redirect('/admin/dashboard');
+    } else {
+      return res.redirect('/challenges');
+    }
+  }
+
   res.render('index', { error: null });
 });
 
