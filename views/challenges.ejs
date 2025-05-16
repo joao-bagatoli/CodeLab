@@ -15,7 +15,7 @@
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 </head>
 
-<body>
+<body class="min-h-screen bg-slate-950 text-white">
     <header class="border-b border-slate-800 bg-slate-900 text-white">
         <div class="container mx-auto flex h-16 items-center justify-between px-4">
             <div>
@@ -47,8 +47,69 @@
             </div>
         </div>
     </header>
-    <main>
-        Desafios
+    <main class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <h1 class="mb-2 text-3xl font-bold">Explore Desafios</h1>
+            <p class="text-slate-400">Descubra desafios de programação e melhore suas habilidades</p>
+        </div>
+        <div class="mb-8">
+            <label class="input border-slate-700 bg-slate-800 text-white w-full">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" class="grow placeholder:text-slate-500" placeholder="Pesquisar">
+            </label>
+        </div>
+        <div class="mb-8 bg-slate-800 w-full h-10 p-1 rounded-md flex items-center">
+            <button class="btn bg-transparent text-sm py-1.5 text-slate-400 flex-1">
+                Todos
+            </button>
+            <button class="btn bg-transparent text-sm py-1.5 text-slate-400 flex-1">
+                Fácil
+            </button>
+            <button class="btn bg-transparent text-sm py-1.5 text-slate-400 flex-1">
+                Médio
+            </button>
+            <button class="btn bg-transparent text-sm py-1.5 text-slate-400 flex-1">
+                Difícil
+            </button>
+        </div>
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div class="rounded-lg border shadow-sm bg-slate-900 text-white">
+                <div class="flex flex-col space-y-1.5 p-6 pb-3">
+                    <div class="flex items-center justify-between">
+                        <div class="badge bg-green-600">Fácil</div>
+                        <div class="flex items-center gap-1 text-yellow-400">
+                            <i class="fa-solid fa-star"></i>
+                            <span class="text-sm">4.8</span>
+                        </div>
+                    </div>
+                    <h3 class="font-semibold mt-2 text-xl tracking-tight">Inserir item em um array</h3>
+                    <p class="text-sm text-slate-400">Descrição do desafio</p>
+                </div>
+                <div class="p-6 pt-0">
+                    <div class="flex flex-wrap gap-2">
+                        <div class="border border-slate-700 font-semibold px-2.5 py-0.5 rounded-full text-slate-300 text-xs">
+                            Arrays
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center p-6 border-t border-slate-800 pt-3">
+                    <div class="flex w-full justify-between text-sm text-slate-400">
+                        <div class="flex items-center gap-1">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>89% sucesso</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <i class="fa-solid fa-clock"></i>
+                            <span>15 min</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <i class="fa-solid fa-users"></i>
+                            <span>12.5k</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
     <script type="module">
         import { getInitials, getColorFromInitials } from '/javascript/avatar.js';
