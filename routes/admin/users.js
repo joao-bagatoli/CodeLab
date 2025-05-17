@@ -8,4 +8,8 @@ router.get('/', requireLogin, requireAdmin, controller.getUsers);
 
 router.post('/', requireLogin, requireAdmin, controller.addUser);
 
+router.post('/:id/update', requireLogin, requireAdmin, controller.updateUser);
+
+router.post('/:id/delete', requireLogin, requireAdmin, controller.deleteUser);
+
 module.exports = router;

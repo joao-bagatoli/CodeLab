@@ -106,6 +106,7 @@
                         <th class="px-4 py-3 text-left text-sm font-medium text-slate-400">Usuário</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-slate-400">Email</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-slate-400">Permissão</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-slate-400">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -119,12 +120,52 @@
                                 <td><%= user.user_name %></td>
                                 <td><%= user.user_email %></td>
                                 <td><%= user.user_admin === 1 ? 'Admin' : 'Normal' %></td>
+                                <td class="flex gap-2">
+                                    <button class="btn btn-outline btn-warning" 
+                                        onclick="openEditModal('<%= user.user_id %>', '<%= user.user_name %>', '<%= user.user_email %>', '<%= user.user_admin %>')">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                    <form action="/admin/users/<%= user.user_id %>/delete" method="POST">
+                                        <button type="submit" class="btn btn-outline btn-error">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                         <% }) %>
                     <% } %>
                 </tbody>
             </table>
         </div>
+        <dialog id="user_edit" class="modal">
+            <div class="modal-box bg-slate-900 text-white">
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost hover:bg-slate-500 absolute right-2">X</button>
+                </form> 
+                <h3 class="text-lg font-bold">Editar Usuário</h3>
+                <form id="editUserForm" method="post">
+                    <fieldset class="fieldset mt-4">
+                        <legend class="text-sm font-medium text-slate-200">
+                            Nome
+                        </legend>
+                        <input type="text" class="input border-slate-700 bg-slate-800 text-white w-full" id="editUserName" disabled />
+                    </fieldset>
+                    <fieldset class="fieldset mt-4">
+                        <legend class="text-sm font-medium text-slate-200">
+                            Email
+                        </legend>
+                        <input type="email" class="input border-slate-700 bg-slate-800 text-white w-full" id="editUserEmail" disabled />
+                    </fieldset>
+                    <div class="flex items-center gap-2 mt-4">
+                        <input type="checkbox" name="isAdmin" id="editUserAdmin" class="checkbox border-slate-700 bg-slate-800 checked:bg-emerald-500">
+                        <span class="text-sm font-medium text-slate-200">Admin</span>
+                    </div>
+                    <button type="submit" class="btn bg-emerald-600 hover:bg-emerald-700 mt-4">
+                        Salvar
+                    </button>
+                </form>
+            </div>
+        </dialog>
     </main>
     <script type="module">
         import { getInitials, getColorFromInitials } from '/javascript/avatar.js';
@@ -136,6 +177,18 @@
         const avatar = document.getElementById('avatar');
         avatar.textContent = initials;
         avatar.classList.add(bgColor);
+    </script>
+    <script>
+        function openEditModal(userId, userName, userEmail, isAdmin) {
+            document.getElementById('editUserName').value = userName;
+            document.getElementById('editUserEmail').value = userEmail;
+            document.getElementById('editUserAdmin').checked = isAdmin == 1;
+
+            const form = document.getElementById('editUserForm');
+            form.action = `/admin/users/${userId}/update`;
+
+            document.getElementById('user_edit').showModal();
+        }
     </script>
 </body>
 

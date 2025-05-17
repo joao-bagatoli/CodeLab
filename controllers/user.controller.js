@@ -22,6 +22,30 @@ class UserController {
             return res.render('admin/users', { user: userLogged, users: null });
         }
     }
+
+    static async updateUser(req, res) {
+        try {
+            const { isAdmin } = req.body;
+            const userId = req.params.id;
+            const adminFlag = isAdmin ? 1 : 0;
+            await userService.updateUserAsync(userId, adminFlag);
+            res.redirect('/admin/users');
+        } catch {
+            const userLogged = req.session.user;
+            return res.render('admin/users', { user: userLogged, users: null });
+        }
+    }
+
+    static async deleteUser(req, res) {
+        try {
+            const userId = req.params.id;
+            await userService.deleteUserAsync(userId);
+            res.redirect('/admin/users');
+        } catch {
+            const userLogged = req.session.user;
+            return res.render('admin/users', { user: userLogged, users: null });
+        }
+    }
 }
 
 module.exports = UserController;
