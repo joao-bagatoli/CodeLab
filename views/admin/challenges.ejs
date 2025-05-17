@@ -113,6 +113,7 @@
                         <th class="px-4 py-3 text-left text-sm font-medium text-slate-400">Título</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-slate-400">Descrição</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-slate-400">Dificuldade</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-slate-400">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -136,12 +137,60 @@
                                         <%= challenge.challenge_difficulty %>
                                     </span>
                                 </td>
+                                <td class="flex gap-2">
+                                    <button class="btn btn-outline btn-warning" 
+                                        onclick="openEditModal('<%= challenge.challenge_id %>', '<%= challenge.challenge_title %>', '<%= challenge.challenge_description %>', '<%= challenge.challenge_difficulty %>')">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                    <form action="/admin/challenges/<%= challenge.challenge_id %>/delete" method="POST">
+                                        <button type="submit" class="btn btn-outline btn-error">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                         <% }) %>
                     <% } %>
                 </tbody>
             </table>
         </div>
+        <dialog id="edit_challenge" class="modal">
+            <div class="modal-box bg-slate-900 text-white">
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost hover:bg-slate-500 absolute right-2">X</button>
+                </form>
+                <h3 class="text-lg font-bold">Editar Desafio</h3>
+                <form id="editChallengeForm" method="post">
+                    <fieldset class="fieldset mt-4">
+                        <legend class="text-sm font-medium text-slate-200">
+                            Título
+                        </legend>
+                        <input type="text" name="title" id="editChallengeTitle" class="input border-slate-700 bg-slate-800 text-white w-full" required />
+                    </fieldset>
+                    <fieldset class="fieldset mt-2">
+                        <legend class="text-sm font-medium text-slate-200">
+                            Descrição
+                        </legend>
+                        <textarea type="textarea" name="description" id="editChallengeDescription" class="textarea border-slate-700 bg-slate-800 text-white w-full" 
+                            required>
+                    </textarea>
+                    </fieldset>
+                    <fieldset class="fieldset mt-2">
+                        <legend class="text-sm font-medium text-slate-200">
+                            Dificuldade
+                        </legend>
+                        <select class="select border-slate-700 bg-slate-800 text-white w-1/2" name="difficulty" id="editChallengeDifficulty">
+                            <option value="easy">Fácil</option>
+                            <option value="medium">Média</option>
+                            <option value="hard">Dificil</option>
+                        </select>
+                    </fieldset>
+                    <button type="submit" class="btn bg-emerald-600 hover:bg-emerald-700 mt-4">
+                        Salvar
+                    </button>
+                </form>
+            </div>
+        </dialog>
     </main>
     <script type="module">
         import { getInitials, getColorFromInitials } from '/javascript/avatar.js';
@@ -153,6 +202,18 @@
         const avatar = document.getElementById('avatar');
         avatar.textContent = initials;
         avatar.classList.add(bgColor);
+    </script>
+    <script>
+        function openEditModal(challengeId, challengeTitle, challengeDescription, challengeDifficulty) {
+            document.getElementById('editChallengeTitle').value = challengeTitle;
+            document.getElementById('editChallengeDescription').value = challengeDescription;
+            document.getElementById('editChallengeDifficulty').value = challengeDifficulty;
+
+            const form = document.getElementById('editChallengeForm');
+            form.action = `/admin/challenges/${challengeId}/update`;
+
+            document.getElementById('edit_challenge').showModal();
+        }
     </script>
 </body>
 

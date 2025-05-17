@@ -8,4 +8,8 @@ router.get('/', requireLogin, requireAdmin, controller.getChallenges);
 
 router.post('/', requireLogin, requireAdmin, controller.addChallenge);
 
+router.post('/:id/update', requireLogin, requireAdmin, controller.updateChallenge);
+
+router.post('/:id/delete', requireLogin, requireAdmin, controller.deleteChallenge);
+
 module.exports = router;
