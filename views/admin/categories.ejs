@@ -15,12 +15,13 @@
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 </head>
 
-<body>
-    <header class="border-b border-slate-800 bg-slate-900 text-white">
+<body class="min-h-screen bg-slate-950 text-white">
+    <header class="border-b border-slate-800 bg-slate-900">
         <div class="container mx-auto flex h-16 items-center justify-between px-4">
-            <div>
+            <div class="flex items-center gap-2">
                 <i class="fa-solid fa-code text-emerald-500" style="font-size: 18px;"></i>
                 <span class="text-xl font-bold text-emerald-500">CodeLab</span>
+                <span class="rounded-md bg-emerald-900 px-1.5 py-0.5 text-xs font-medium text-emerald-300">Admin</span>
             </div>
             <div class="hidden flex-1 items-center justify-center md:flex">
                 <nav class="flex space-x-4">
@@ -40,18 +41,124 @@
             </div>
             <div class="flex items-center gap-4">
                 <div class="dropdown dropdown-bottom">
-                    <div tabindex="0" role="button" class="overflow-hidden rounded-full h-8 w-8">
-                        <span id="avatar" class="flex items-center justify-center w-full h-full font-bold text-sm"></span>
+                    <div tabindex="0" role="button" class="cursor-pointer overflow-hidden rounded-full h-8 w-8">
+                        <span id="avatar"
+                            class="flex items-center justify-center w-full h-full font-bold text-sm"></span>
                     </div>
-                    <ul tabindex="0" class="dropdown-content menu bg-base-100 text-slate-400 rounded-box z-1 mt-2 w-40 p-2 shadow-sm">
+                    <ul tabindex="0"
+                        class="dropdown-content menu bg-slate-800 text-slate-400 rounded-box z-1 mt-2 w-40 p-2 shadow-sm">
                         <li><a href="/logout">Sair</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </header>
-    <main>
-        Categorias
+    <main class="container mx-auto px-4 py-8">
+        <div class="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-center">
+            <div>
+                <h1 class="mb-2 text-3xl font-bold">Gerenciamento de Categorias</h1>
+                <p class="text-slate-400">
+                    Crie, edite e gerencie categorias de desafios
+                </p>
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="btn bg-emerald-600 hover:bg-emerald-700" onclick="create_category.showModal()">
+                    <i class="fa-solid fa-plus"></i>
+                    Nova Categoria
+                </button>
+            </div>
+        </div>
+        <dialog id="create_category" class="modal">
+            <div class="modal-box bg-slate-900 text-white">
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost hover:bg-slate-500 absolute right-2">X</button>
+                </form>
+                <h3 class="text-lg font-bold">Nova Categoria</h3>
+                <form action="/admin/categories" method="post">
+                    <fieldset class="fieldset mt-4">
+                        <legend class="text-sm font-medium text-slate-200">
+                            Nome
+                        </legend>
+                        <input type="text" name="name" class="input border-slate-700 bg-slate-800 text-white w-full"
+                            required />
+                    </fieldset>
+                    <fieldset class="fieldset mt-2">
+                        <legend class="text-sm font-medium text-slate-200">
+                            Descrição
+                        </legend>
+                        <textarea type="textarea" name="description"
+                            class="textarea border-slate-700 bg-slate-800 text-white w-full" required>
+                    </textarea>
+                    </fieldset>
+                    <button type="submit" class="btn bg-emerald-600 hover:bg-emerald-700 mt-4">
+                        Salvar
+                    </button>
+                </form>
+            </div>
+        </dialog>
+        <div class="overflow-x-auto bg-slate-900 text-white border rounded-box border-slate-800">
+            <table class="table">
+                <thead>
+                    <tr class="border-b border-slate-800">
+                        <th class="px-4 py-3 text-left text-sm font-medium text-slate-400">Nome</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-slate-400">Descrição</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-slate-400">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (categories.length === 0) { %>
+                        <tr class="border-b border-slate-800">
+                            <td colspan="4">Nenhuma categoria encontrada</td>
+                        </tr>
+                    <% } else { %>
+                        <% categories.forEach(category => { %>
+                            <tr class="border-b border-slate-800">
+                                <td><%= category.category_name %></td>
+                                <td><%= category.category_description %></td>
+                                <td class="flex gap-2">
+                                    <button class="btn btn-outline btn-warning" 
+                                        onclick="openEditModal('<%= category.category_id %>', '<%= category.category_name %>', '<%= category.category_description %>')">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                    <form action="/admin/categories/<%= category.category_id %>/delete" method="POST">
+                                        <button type="submit" class="btn btn-outline btn-error">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+        <dialog id="edit_category" class="modal">
+            <div class="modal-box bg-slate-900 text-white">
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost hover:bg-slate-500 absolute right-2">X</button>
+                </form>
+                <h3 class="text-lg font-bold">Editar Categoria</h3>
+                <form id="editCategoryForm" method="post">
+                    <fieldset class="fieldset mt-4">
+                        <legend class="text-sm font-medium text-slate-200">
+                            Nome
+                        </legend>
+                        <input type="text" name="name" id="editCategoryName" class="input border-slate-700 bg-slate-800 text-white w-full" required />
+                    </fieldset>
+                    <fieldset class="fieldset mt-2">
+                        <legend class="text-sm font-medium text-slate-200">
+                            Descrição
+                        </legend>
+                        <textarea type="textarea" name="description" id="editCategoryDescription" class="textarea border-slate-700 bg-slate-800 text-white w-full" 
+                            required>
+                        </textarea>
+                    </fieldset>
+                    <button type="submit" class="btn bg-emerald-600 hover:bg-emerald-700 mt-4">
+                        Salvar
+                    </button>
+                </form>
+            </div>
+        </dialog>
     </main>
     <script type="module">
         import { getInitials, getColorFromInitials } from '/javascript/avatar.js';
@@ -63,6 +170,17 @@
         const avatar = document.getElementById('avatar');
         avatar.textContent = initials;
         avatar.classList.add(bgColor);
+    </script>
+    <script>
+        function openEditModal(categoryId, categoryName, categoryDescription) {
+            document.getElementById('editCategoryName').value = categoryName;
+            document.getElementById('editCategoryDescription').value = categoryDescription;
+
+            const form = document.getElementById('editCategoryForm');
+            form.action = `/admin/categories/${categoryId}/update`;
+
+            document.getElementById('edit_category').showModal();
+        }
     </script>
 </body>
 
