@@ -1,9 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var requireLogin = require('../middlewares/requireLogin');
+var controller = require('../controllers/challenge.controller');
 
-router.get('/', requireLogin, function (req, res) {
-    res.render('challenges', { user: req.session.user });
-});
+router.get('/', requireLogin, controller.getChallenges);
 
 module.exports = router;

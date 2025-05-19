@@ -5,7 +5,10 @@ class ChallengeController {
         try {
             const user = req.session.user;
             const challenges = await challengeService.getChallengesAsync();
-            return res.render('admin/challenges', { user, challenges });
+            if (user.isAdmin) {
+                return res.render('admin/challenges', { user, challenges });
+            }
+            return res.render('challenges', { user, challenges });
         } catch {
             return res.render('admin/challenges', { user, challenges: null });
         }
