@@ -1,42 +1,35 @@
-const MainController = require('../controllers/main.controller');
-const mainService = require('../services/main.service');
-const emailService = require('../utils/emailService');
-const tokenUtil = require('../utils/tokenUtil');
+const mainController = require('../../controllers/main.controller');
+const mainService = require('../../services/main.service');
+const emailService = require('../../utils/emailService');
 
-jest.mock('../services/main.service');
-jest.mock('../utils/emailService');
-jest.mock('../utils/tokenUtil');
+jest.mock('../../services/main.service');
+jest.mock('../../utils/emailService');
 
-describe('MainController', () => {
-  let req, res;
+describe('mainController.requestPasswordReset', () => {
+  it('deve enviar link de redefinição quando email for válido', async () => {
+    const req = { body: { email: 'user@email.com' } };
+    const res = { render: jest.fn() };
 
-  beforeEach(() => {
-    req = { body: {}, session: {}, query: {} };
-    res = { render: jest.fn(), redirect: jest.fn() };
-    jest.clearAllMocks();
+    mainService.getUserByEmail.mockResolvedValue({ id: 1, name: 'User' });
+    mainService.generateResetToken.mockResolvedValue('token123');
+    emailService.sendResetEmailAsync.mockResolvedValue(true);
+
+    await mainController.requestPasswordReset(req, res);
+
+    expect(mainService.getUserByEmail).toHaveBeenCalledWith('user@email.com');
+    expect(mainService.generateResetToken).toHaveBeenCalledWith(1);
+    expect(emailService.sendResetEmailAsync).toHaveBeenCalledWith('user@email.com', expect.stringContaining('token123'));
+    expect(res.render).toHaveBeenCalledWith('password-reset-request', { success: 'Link de redefinição enviado.' });
   });
 
-  it('deve retornar erro se o login falhar (credenciais ausentes)', async () => {
-    await MainController.login(req, res);
-    expect(res.render).toHaveBeenCalledWith('index', { error: 'Email e senha não podem ser vazios' });
-  });
+  it('deve retornar erro se e-mail for inválido', async () => {
+    const req = { body: { email: 'naoencontrado@email.com' } };
+    const res = { render: jest.fn() };
 
-  it('deve redirecionar se o login for bem-sucedido', async () => {
-    req.body = { email: 'joao@gmail.com', password: '123' };
-    mainService.loginAsync.mockResolvedValue({
-      user_id: 1, user_name: 'Test', user_email: 'joao@gmail.com', user_admin: 1
-    });
+    mainService.getUserByEmail.mockResolvedValue(null);
 
-    await MainController.login(req, res);
-    expect(res.redirect).toHaveBeenCalledWith('/admin/dashboard');
-  });
+    await mainController.requestPasswordReset(req, res);
 
-  it('deve gerar erro se o token for inválido em resetPassword', async () => {
-    req.query.token = 'abc';
-    req.body = { newPassword: '1234', confirmNewPassword: '1234' };
-    mainService.getUserByTokenAsync.mockResolvedValue(null);
-
-    await MainController.resetPassword(req, res);
-    expect(res.render).toHaveBeenCalledWith('resetPassword', { error: 'Token inválido' });
+    expect(res.render).toHaveBeenCalledWith('password-reset-request', { error: 'E-mail não encontrado.' });
   });
 });
