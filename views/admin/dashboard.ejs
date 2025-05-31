@@ -16,54 +16,11 @@
 </head>
 
 <body>
-    <header class="border-b border-slate-800 bg-slate-900 text-white">
-        <div class="container mx-auto flex h-16 items-center justify-between px-4">
-            <div>
-                <i class="fa-solid fa-code text-emerald-500" style="font-size: 18px;"></i>
-                <span class="text-xl font-bold text-emerald-500">CodeLab</span>
-            </div>
-            <div class="hidden flex-1 items-center justify-center md:flex">
-                <nav class="flex space-x-4">
-                    <a href="/admin/dashboard" class="px-3 py-2 text-sm text-slate-400 hover:text-white">
-                        Dashboard
-                    </a>
-                    <a href="/admin/users" class="px-3 py-2 text-sm text-slate-400 hover:text-white">
-                        Usuários
-                    </a>
-                    <a href="/admin/challenges" class="px-3 py-2 text-sm text-slate-400 hover:text-white">
-                        Desafios
-                    </a>
-                    <a href="/admin/categories" class="px-3 py-2 text-sm text-slate-400 hover:text-white">
-                        Categorias
-                    </a>
-                </nav>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="dropdown dropdown-bottom">
-                    <div tabindex="0" role="button" class="overflow-hidden rounded-full h-8 w-8">
-                        <span id="avatar" class="flex items-center justify-center w-full h-full font-bold text-sm"></span>
-                    </div>
-                    <ul tabindex="0" class="dropdown-content menu bg-base-100 text-slate-400 rounded-box z-1 mt-2 w-40 p-2 shadow-sm">
-                        <li><a href="/logout">Sair</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </header>
+    <%- include('../partials/navbarAdmin') %>
+    
     <main>
         Dashboard
     </main>
-    <script type="module">
-        import { getInitials, getColorFromInitials } from '/javascript/avatar.js';
-
-        const userName = '<%= user.name %>';
-        const initials = getInitials(userName);
-        const bgColor = getColorFromInitials(initials);
-
-        const avatar = document.getElementById('avatar');
-        avatar.textContent = initials;
-        avatar.classList.add(bgColor);
-    </script>
 </body>
 
 </html>
