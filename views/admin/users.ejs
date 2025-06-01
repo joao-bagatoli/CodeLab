@@ -64,6 +64,12 @@
                 </form>
             </div>
         </dialog>
+        <% if (error) { %>
+            <div role="alert" class="alert alert-error mb-8">
+              <i class="fa-solid fa-circle-xmark"></i>
+              <span><%= error %></span>
+            </div>
+        <% } %>
         <div class="overflow-x-auto bg-slate-900 text-white border rounded-box border-slate-800">
             <table class="table">
                 <thead>
