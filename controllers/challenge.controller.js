@@ -58,6 +58,18 @@ class ChallengeController {
             return res.render('admin/challenges', { user, challenges: [], categories: [], error: 'Erro ao deletar desafio' });
         }
     }
+
+    static async getChallengeDetails(req, res) {
+        const user = req.session.user;
+
+        try {
+            const id = req.params.id;
+            const challengeDetails = await challengeService.getChallengeDetailsAsync(id);
+            return res.render('challengeDetails', { user, challengeDetails, error: null });
+        } catch {
+            return res.render('challengeDetails', { user, challengeDetails: [], error: 'Erro ao carregar detalhes do desafio' });
+        }
+    }
 }
 
 module.exports = ChallengeController;

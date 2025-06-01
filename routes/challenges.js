@@ -5,4 +5,6 @@ var controller = require('../controllers/challenge.controller');
 
 router.get('/', requireLogin, controller.getChallenges);
 
+router.get('/:id', requireLogin, controller.getChallengeDetails);
+
 module.exports = router;

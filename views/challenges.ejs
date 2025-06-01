@@ -45,7 +45,7 @@
         </div>
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             <% challenges.forEach(challenge => { %>
-                <div class="challenge-card rounded-lg border shadow-sm bg-slate-900 text-white" 
+                <a href="/challenges/<%= challenge.challenge_id %>" class="challenge-card rounded-lg border shadow-sm bg-slate-900 text-white" 
                     data-title="<%= challenge.challenge_title.toLowerCase() %>" 
                     data-description="<%= challenge.challenge_description.toLowerCase() %>"
                     data-difficulty="<%= challenge.challenge_difficulty.toLowerCase() %>">
@@ -68,7 +68,7 @@
                         <p class="text-sm text-slate-400"><%= challenge.challenge_description %></p>
                     </div>
                     <div class="p-6 pt-0">
-                        <div class="flex flex-wrap gap-2">
+                        <div class="flex">
                             <div class="border border-slate-700 font-semibold px-2.5 py-0.5 rounded-full text-slate-300 text-xs">
                                 <%= challenge.category_name %>
                             </div>
@@ -90,7 +90,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             <% }) %>
         </div>
     </main>

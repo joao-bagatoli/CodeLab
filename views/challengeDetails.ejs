@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CodeLab</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/all.min.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+</head>
+
+<body class="min-h-screen bg-slate-950 text-white">
+    <%- include('partials/navbar') %>
+    
+    <div class="border-b border-slate-800 bg-slate-900">
+        <div class="container mx-auto px-4 py-3">
+            <a href="/challenges" class="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-white">
+                <i class="fa-solid fa-arrow-left"></i>
+                Voltar aos desafios
+            </a>
+        </div>
+    </div>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <div class="mb-4 flex flex-wrap items-center justify-between gap-4">
+                <h1 class="text-3xl font-bold">
+                    <%= challengeDetails.challenge_title %>
+                </h1>
+                <div class="flex items-center gap-4">
+                    <span class="badge <%=
+                        challengeDetails.challenge_difficulty === 'easy' 
+                        ? 'bg-green-600 hover:bg-green-700'
+                        : challengeDetails.challenge_difficulty === 'medium'
+                        ? 'bg-yellow-600 hover:bg-yellow-700'
+                        : 'bg-red-600 hover:bg-red-700'%>">
+                        <%= challengeDetails.challenge_difficulty %>
+                    </span>
+                    <div class="flex items-center gap-1 text-yellow-400">
+                        <i class="fa-solid fa-star"></i>
+                        <span class="text-sm">4.8</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mb-4 flex flex-wrap gap-4">
+            <div class="flex items-center gap-1 text-slate-400">
+                <i class="fa-solid fa-circle-check"></i>
+                <span>89% sucesso</span>
+            </div>
+            <div class="flex items-center gap-1 text-slate-400">
+                <i class="fa-solid fa-clock"></i>
+                <span>15 min</span>
+            </div>
+            <div class="flex items-center gap-1 text-slate-400">
+                <i class="fa-solid fa-users"></i>
+                <span>12.5k</span>
+            </div>
+        </div>
+        <div class="flex">
+            <div class="border border-slate-700 font-semibold px-2.5 py-0.5 rounded-full text-slate-300 text-xs">
+                <%= challengeDetails.category_name %>
+            </div>
+        </div>
+        <div class="grid gap-8 lg:grid-cols-2">
+            
+        </div>
+    </main>
+</body>
+
+</html>

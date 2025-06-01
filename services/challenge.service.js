@@ -27,6 +27,17 @@ class ChallengeService {
         const query = "DELETE FROM challenges WHERE challenge_id = ?;";
         await connection.query(query, [challengeId]);
     }
+
+    async getChallengeDetailsAsync(challengeId) {
+        const connection = await global.db.connectDbAsync();
+        const query = `
+            SELECT c.*, cat.category_name
+            FROM challenges c
+            INNER JOIN categories cat ON c.category_id = cat.category_id
+        `;
+        const [challengeDetails] = await connection.query(query, [challengeId]);
+        return challengeDetails.length ? challengeDetails[0] : null;
+    }
 }
 
 module.exports = new ChallengeService();
