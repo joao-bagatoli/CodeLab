@@ -26,26 +26,29 @@
         <div class="mb-8">
             <label class="input border-slate-700 bg-slate-800 text-white w-full">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" class="grow placeholder:text-slate-500" placeholder="Pesquisar">
+                <input type="text" class="grow placeholder:text-slate-500" id="searchInput" placeholder="Pesquisar">
             </label>
         </div>
         <div class="mb-8 bg-slate-800 w-full h-10 p-1 rounded-md flex items-center">
-            <button class="btn bg-transparent text-sm py-1.5 text-slate-400 flex-1">
+            <button class="btn-difficulty btn bg-emerald-600 text-white text-sm py-1.5 flex-1" data-filter="all">
                 Todos
             </button>
-            <button class="btn bg-transparent text-sm py-1.5 text-slate-400 flex-1">
+            <button class="btn-difficulty btn bg-slate-800 text-slate-400 text-sm py-1.5 flex-1" data-filter="easy">
                 Fácil
             </button>
-            <button class="btn bg-transparent text-sm py-1.5 text-slate-400 flex-1">
+            <button class="btn-difficulty btn bg-slate-800 text-slate-400 text-sm py-1.5 flex-1" data-filter="medium">
                 Médio
             </button>
-            <button class="btn bg-transparent text-sm py-1.5 text-slate-400 flex-1">
+            <button class="btn-difficulty btn bg-slate-800 text-slate-400 text-sm py-1.5 flex-1" data-filter="hard">
                 Difícil
             </button>
         </div>
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             <% challenges.forEach(challenge => { %>
-                <div class="rounded-lg border shadow-sm bg-slate-900 text-white">
+                <div class="challenge-card rounded-lg border shadow-sm bg-slate-900 text-white" 
+                    data-title="<%= challenge.challenge_title.toLowerCase() %>" 
+                    data-description="<%= challenge.challenge_description.toLowerCase() %>"
+                    data-difficulty="<%= challenge.challenge_difficulty.toLowerCase() %>">
                     <div class="flex flex-col space-y-1.5 p-6 pb-3">
                         <div class="flex items-center justify-between">
                             <span class="badge <%=
@@ -91,6 +94,59 @@
             <% }) %>
         </div>
     </main>
+    <script>
+        document.getElementById('searchInput').addEventListener('input', (event) => {
+            const filterString = event.target.value.toLowerCase();
+            const difficultyButtons = document.querySelectorAll('.btn-difficulty');
+            const cards = document.querySelectorAll('.challenge-card');
+
+            difficultyButtons.forEach(btn => {
+                btn.classList.remove('bg-emerald-600', 'text-white');
+                btn.classList.add('bg-slate-800', 'text-slate-400');
+
+                const filter = btn.dataset.filter;
+
+                if (filter === 'all') {
+                    btn.classList.remove('bg-slate-800', 'text-slate-400');
+                    btn.classList.add('bg-emerald-600', 'text-white');
+                }
+            });
+
+            cards.forEach(card => {
+                const title = card.dataset.title;
+                const description = card.dataset.description;
+
+                if (title.includes(filterString) || description.includes(filterString)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+    <script>
+        const difficultyButtons = document.querySelectorAll('.btn-difficulty');
+        const cards = document.querySelectorAll('.challenge-card');
+
+        difficultyButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                difficultyButtons.forEach(btn => {
+                    btn.classList.remove('bg-emerald-600', 'text-white');
+                    btn.classList.add('bg-slate-800', 'text-slate-400');
+                });
+
+                button.classList.remove('bg-slate-800', 'text-slate-400');
+                button.classList.add('bg-emerald-600', 'text-white');
+
+                const filter = button.dataset.filter;
+
+                cards.forEach(card => {
+                    const difficulty = card.dataset.difficulty;
+                    card.style.display = (filter === 'all' || filter === difficulty) ? '' : 'none';
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
