@@ -1,21 +1,25 @@
 class ChallengeService {
     async getChallengesAsync() {
         const connection = await global.db.connectDbAsync();
-        const query = "SELECT * FROM challenges;";
+        const query = `
+            SELECT c.*, cat.category_name
+            FROM challenges c
+            INNER JOIN categories cat ON c.category_id = cat.category_id
+        `;
         const [challenges] = await connection.query(query);
         return challenges;
     }
 
     async addChallengeAsync(challenge, user) {
         const connection = await global.db.connectDbAsync();
-        const query = "INSERT INTO challenges (challenge_title, challenge_description, challenge_difficulty, created_by, created_at) VALUES (?,?,?,?,NOW());";
-        await connection.query(query, [challenge.title, challenge.description, challenge.difficulty, user.id]);
+        const query = "INSERT INTO challenges (challenge_title, challenge_description, challenge_difficulty, category_id, created_by, created_at) VALUES (?,?,?,?,?,NOW());";
+        await connection.query(query, [challenge.title, challenge.description, challenge.difficulty, challenge.category, user.id]);
     }
 
     async updateChallengeAsync(challenge) {
         const connection = await global.db.connectDbAsync();
-        const query = "UPDATE challenges SET challenge_title = ?, challenge_description = ?, challenge_difficulty = ? where challenge_id = ?;";
-        await connection.query(query, [challenge.title, challenge.description, challenge.difficulty, challenge.id]);
+        const query = "UPDATE challenges SET challenge_title = ?, challenge_description = ?, challenge_difficulty = ?, category_id = ? WHERE challenge_id = ?;";
+        await connection.query(query, [challenge.title, challenge.description, challenge.difficulty, challenge.category, challenge.id]);
     }
 
     async deleteChallengeAsync(challengeId) {

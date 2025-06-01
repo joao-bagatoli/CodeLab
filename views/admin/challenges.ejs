@@ -59,10 +59,20 @@
                         <legend class="text-sm font-medium text-slate-200">
                             Dificuldade
                         </legend>
-                        <select class="select border-slate-700 bg-slate-800 text-white w-1/2" name="difficulty">
+                        <select class="select border-slate-700 bg-slate-800 text-white" name="difficulty">
                             <option value="easy">Fácil</option>
                             <option value="medium">Média</option>
                             <option value="hard">Dificil</option>
+                        </select>
+                    </fieldset>
+                    <fieldset class="fieldset mt-2">
+                        <legend class="text-sm font-medium text-slate-200">
+                            Categoria
+                        </legend>
+                        <select class="select border-slate-700 bg-slate-800 text-white" name="category">
+                            <% categories.forEach(category => { %>
+                                <option value="<%= category.category_id %>"><%= category.category_name %></option>
+                            <% }) %>
                         </select>
                     </fieldset>
                     <button type="submit" class="btn bg-emerald-600 hover:bg-emerald-700 mt-4">
@@ -78,6 +88,7 @@
                         <th class="px-4 py-3 text-left text-sm font-medium text-slate-400">Título</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-slate-400">Descrição</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-slate-400">Dificuldade</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-slate-400">Categoria</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-slate-400">Ações</th>
                     </tr>
                 </thead>
@@ -102,9 +113,10 @@
                                         <%= challenge.challenge_difficulty %>
                                     </span>
                                 </td>
+                                <td><%= challenge.category_name %></td>
                                 <td class="flex gap-2">
                                     <button class="btn btn-outline btn-warning" 
-                                        onclick="openEditModal('<%= challenge.challenge_id %>', '<%= challenge.challenge_title %>', '<%= challenge.challenge_description %>', '<%= challenge.challenge_difficulty %>')">
+                                        onclick="openEditModal('<%= challenge.challenge_id %>', '<%= challenge.challenge_title %>', '<%= challenge.challenge_description %>', '<%= challenge.challenge_difficulty %>', '<%= challenge.category_id %>')">
                                         <i class="fa-solid fa-pen"></i>
                                     </button>
                                     <form action="/admin/challenges/<%= challenge.challenge_id %>/delete" method="POST">
@@ -144,10 +156,20 @@
                         <legend class="text-sm font-medium text-slate-200">
                             Dificuldade
                         </legend>
-                        <select class="select border-slate-700 bg-slate-800 text-white w-1/2" name="difficulty" id="editChallengeDifficulty">
+                        <select class="select border-slate-700 bg-slate-800 text-white" name="difficulty" id="editChallengeDifficulty">
                             <option value="easy">Fácil</option>
                             <option value="medium">Média</option>
                             <option value="hard">Dificil</option>
+                        </select>
+                    </fieldset>
+                    <fieldset class="fieldset mt-2">
+                        <legend class="text-sm font-medium text-slate-200">
+                            Categoria
+                        </legend>
+                        <select class="select border-slate-700 bg-slate-800 text-white" name="category" id="editChallengeCategory">
+                            <% categories.forEach(category => { %>
+                                <option value="<%= category.category_id %>"><%= category.category_name %></option>
+                            <% }) %>
                         </select>
                     </fieldset>
                     <button type="submit" class="btn bg-emerald-600 hover:bg-emerald-700 mt-4">
@@ -158,10 +180,11 @@
         </dialog>
     </main>
     <script>
-        function openEditModal(challengeId, challengeTitle, challengeDescription, challengeDifficulty) {
+        function openEditModal(challengeId, challengeTitle, challengeDescription, challengeDifficulty, challengeCategory) {
             document.getElementById('editChallengeTitle').value = challengeTitle;
             document.getElementById('editChallengeDescription').value = challengeDescription;
             document.getElementById('editChallengeDifficulty').value = challengeDifficulty;
+            document.getElementById('editChallengeCategory').value = challengeCategory;
 
             const form = document.getElementById('editChallengeForm');
             form.action = `/admin/challenges/${challengeId}/update`;
