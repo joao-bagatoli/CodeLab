@@ -9,12 +9,12 @@ class ChallengeController {
             const challenges = await challengeService.getChallengesAsync();
             if (user.isAdmin) {
                 const categories = await categoryService.getCategoriesAsync();
-                return res.render('admin/challenges', { user, challenges, categories });
+                return res.render('admin/challenges', { user, challenges, categories, error: null });
             }
             return res.render('challenges', { user, challenges });
         } catch {
             if (user.isAdmin) {
-                return res.render('admin/challenges', { user, challenges: [], categories: [] });
+                return res.render('admin/challenges', { user, challenges: [], categories: [], error: 'Erro ao carregar desafios' });
             }
             return res.render('challenges', { user, challenges: null });
         }
@@ -29,7 +29,7 @@ class ChallengeController {
             await challengeService.addChallengeAsync(challenge, user);
             return res.redirect('/admin/challenges');
         } catch {
-            return res.render('admin/challenges', { user, challenges: [], categories: [] });
+            return res.render('admin/challenges', { user, challenges: [], categories: [], error: 'Erro ao adicionar desafio' });
         }
     }
 
@@ -43,7 +43,7 @@ class ChallengeController {
             await challengeService.updateChallengeAsync(challenge);
             return res.redirect('/admin/challenges');
         } catch {
-            return res.render('admin/challenges', { user, challenges: [], categories: [] });
+            return res.render('admin/challenges', { user, challenges: [], categories: [], error: 'Erro ao atualizar desafio' });
         }
     }
 
@@ -55,7 +55,7 @@ class ChallengeController {
             await challengeService.deleteChallengeAsync(id);
             return res.redirect('/admin/challenges');
         } catch {
-            return res.render('admin/challenges', { user, challenges: [], categories: [] });
+            return res.render('admin/challenges', { user, challenges: [], categories: [], error: 'Erro ao deletar desafio' });
         }
     }
 }
