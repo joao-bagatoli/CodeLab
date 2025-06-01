@@ -44,16 +44,13 @@
                         <legend class="text-sm font-medium text-slate-200">
                             Nome
                         </legend>
-                        <input type="text" name="name" class="input border-slate-700 bg-slate-800 text-white w-full"
-                            required />
+                        <input type="text" name="name" class="input border-slate-700 bg-slate-800 text-white w-full" required />
                     </fieldset>
                     <fieldset class="fieldset mt-2">
                         <legend class="text-sm font-medium text-slate-200">
                             Descrição
                         </legend>
-                        <textarea type="textarea" name="description"
-                            class="textarea border-slate-700 bg-slate-800 text-white w-full" required>
-                    </textarea>
+                        <textarea type="textarea" name="description" class="textarea border-slate-700 bg-slate-800 text-white w-full"></textarea>
                     </fieldset>
                     <button type="submit" class="btn bg-emerald-600 hover:bg-emerald-700 mt-4">
                         Salvar
@@ -61,6 +58,12 @@
                 </form>
             </div>
         </dialog>
+        <% if (error) { %>
+            <div role="alert" class="alert alert-error mb-8">
+              <i class="fa-solid fa-circle-xmark"></i>
+              <span><%= error %></span>
+            </div>
+        <% } %>
         <div class="overflow-x-auto bg-slate-900 text-white border rounded-box border-slate-800">
             <table class="table">
                 <thead>
@@ -114,9 +117,7 @@
                         <legend class="text-sm font-medium text-slate-200">
                             Descrição
                         </legend>
-                        <textarea type="textarea" name="description" id="editCategoryDescription" class="textarea border-slate-700 bg-slate-800 text-white w-full" 
-                            required>
-                        </textarea>
+                        <textarea type="textarea" name="description" id="editCategoryDescription" class="textarea border-slate-700 bg-slate-800 text-white w-full"></textarea>
                     </fieldset>
                     <button type="submit" class="btn bg-emerald-600 hover:bg-emerald-700 mt-4">
                         Salvar

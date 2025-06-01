@@ -2,28 +2,32 @@ const categoryService = require('../services/category.service');
 
 class CategoryController {
     static async getCategories(req, res) {
+        const user = req.session.user;
+
         try {
-            const user = req.session.user;
             const categories = await categoryService.getCategoriesAsync();
-            return res.render('admin/categories', { user, categories });
+            return res.render('admin/categories', { user, categories, error: null });
         } catch {
-            return res.render('admin/categories', { user, categories: null });
+            return res.render('admin/categories', { user, categories: [], error: 'Erro ao carregar categorias' });
         }
     }
 
     static async addCategory(req, res) {
+        const user = req.session.user;
+
         try {
             const { name, description } = req.body;
             const category = { name, description };
             await categoryService.addCategoryAsync(category);
             return res.redirect('/admin/categories');
         } catch {
-            const user = req.session.user;
-            return res.render('admin/categories', { user, categories: null });
+            return res.render('admin/categories', { user, categories: [], error: 'Erro ao adicionar categoria' });
         }
     }
 
     static async updateCategory(req, res) {
+        const user = req.session.user;
+
         try {
             const { name, description } = req.body;
             const id = req.params.id;
@@ -31,19 +35,19 @@ class CategoryController {
             await categoryService.updateCategoryAsync(category);
             return res.redirect('/admin/categories');
         } catch {
-            const user = req.session.user;
-            return res.render('admin/categories', { user, categories: null });
+            return res.render('admin/categories', { user, categories: [], error: 'Erro ao atualizar categoria' });
         }
     }
 
     static async deleteCategory(req, res) {
+        const user = req.session.user;
+
         try {
             const id = req.params.id;
             await categoryService.deleteCategoryAsync(id);
             return res.redirect('/admin/categories');
         } catch {
-            const user = req.session.user;
-            return res.render('admin/categories', { user, categories: null });
+            return res.render('admin/categories', { user, categories: [], error: 'Erro ao deletar categoria' });
         }
     }
 }
