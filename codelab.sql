@@ -24,9 +24,10 @@ DROP TABLE IF EXISTS `categories`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `categories` (
   `category_id` int(11) NOT NULL AUTO_INCREMENT,
-  `category_name` varchar(30) DEFAULT NULL,
+  `category_name` varchar(200) DEFAULT NULL,
+  `category_description` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -35,6 +36,7 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+INSERT INTO `categories` VALUES (4,'Algoritmos e Estrutura de Dados','                    '),(5,'Lógica e Raciocínio Matemático','                    '),(6,'Programação Orientada a Objetos','                    '),(7,'Manipulação de Dados','                    ');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -47,15 +49,18 @@ DROP TABLE IF EXISTS `challenges`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `challenges` (
   `challenge_id` int(11) NOT NULL AUTO_INCREMENT,
-  `challenge_title` varchar(30) DEFAULT NULL,
-  `challenge_description` varchar(30) DEFAULT NULL,
+  `challenge_title` varchar(200) DEFAULT NULL,
+  `challenge_description` varchar(500) DEFAULT NULL,
   `challenge_difficulty` enum('easy','medium','hard') DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `created_at` date DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`challenge_id`),
   KEY `created_by` (`created_by`),
-  CONSTRAINT `challenges_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `fk_category` (`category_id`),
+  CONSTRAINT `challenges_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `fk_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +69,7 @@ CREATE TABLE `challenges` (
 
 LOCK TABLES `challenges` WRITE;
 /*!40000 ALTER TABLE `challenges` DISABLE KEYS */;
-INSERT INTO `challenges` VALUES (3,'Arrow Function','Substituir função anônima por ','medium',1,'2025-05-11'),(4,'Lista e Coleções','                    ','easy',1,'2025-05-11'),(5,'Async/Await','Lidar com operações assincrona','hard',1,'2025-05-11');
+INSERT INTO `challenges` VALUES (7,'Teste','                    ','easy',1,'2025-05-31',NULL),(8,'Teste','11                    ','easy',1,'2025-05-31',NULL),(11,'Ordenação Customizada de Strings','Desenvolva um algoritmo que ordena uma lista de strings com base em um critério personalizado: primeiro por comprimento da string (menores primeiro), depois em ordem alfabética.                 ','medium',1,'2025-05-31',4),(12,'Sistema de Biblioteca com Empréstimos','Implemente classes para representar livros, usuários e empréstimos. O sistema deve permitir que um usuário pegue um livro emprestado e registre a data. Inclua métodos para verificar disponibilidade e histórico.                    ','hard',1,'2025-05-31',6),(13,'Soma de Números Pares','Dado um array de números inteiros, some apenas os números pares.                    ','easy',1,'2025-05-31',7),(14,'Maior Número em um Array','Crie uma função que retorne o maior número presente em um array.                    ','easy',1,'2025-05-31',7);
 /*!40000 ALTER TABLE `challenges` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,7 +178,7 @@ CREATE TABLE `users` (
   `reset_token_expiration` date DEFAULT NULL,
   `user_admin` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -182,7 +187,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'joao@gmail.com','123','joao bagatoli',NULL,NULL,1),(2,'testUser@gmail.com','123','test user',NULL,NULL,0),(3,'larissa@gmail.com','123','larissa',NULL,NULL,0),(4,'james@email.com','123','james',NULL,NULL,0),(5,'wedley@email.com','123','wedley',NULL,NULL,0),(6,'guilherme@gmail.com','123','Guilherme',NULL,NULL,0),(7,'max@email.com','123','max','9c6f6ca06bd26369798beb9aa3b2a6','2025-05-11',0);
+INSERT INTO `users` VALUES (1,'joao@gmail.com','123','joao bagatoli',NULL,NULL,1),(5,'wedley@email.com','123','wedley',NULL,NULL,1),(6,'guilherme@gmail.com','123','Guilherme',NULL,NULL,0),(11,'max@email.com','123','max',NULL,NULL,0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -195,4 +200,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-11 22:26:54
+-- Dump completed on 2025-05-31 21:45:24
