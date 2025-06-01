@@ -7,7 +7,7 @@ Siga os passos abaixo para clonar este projeto na sua máquina local:
 
 ### 1. Clone o repositório
 
-Abra o terminal e execute os seguinte comando:
+Abra o terminal e execute o seguinte comando:
 
 ```bash
 git clone https://github.com/joao-bagatoli/CodeLab.git
