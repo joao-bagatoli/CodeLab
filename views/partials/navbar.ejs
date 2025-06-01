@@ -6,13 +6,16 @@
         </div>
         <div class="hidden flex-1 items-center justify-center md:flex">
             <nav class="flex space-x-4">
-                <a href="/challenges" class="px-3 py-2 text-sm text-slate-400 hover:text-white">
+                <a href="/challenges" 
+                    class="px-3 py-2 text-sm <%= currentPath === '/challenges' ? 'text-emerald-500' : 'text-slate-400' %> hover:text-white">
                     Explorar
                 </a>
-                <a href="/my-challenges" class="px-3 py-2 text-sm text-slate-400 hover:text-white">
+                <a href="/my-challenges" 
+                    class="px-3 py-2 text-sm <%= currentPath === '/my-challenges' ? 'text-emerald-500' : 'text-slate-400' %> hover:text-white">
                     Meus Desafios
                 </a>
-                <a href="/ranking" class="px-3 py-2 text-sm text-slate-400 hover:text-white">
+                <a href="/ranking" 
+                    class="px-3 py-2 text-sm <%= currentPath === '/ranking' ? 'text-emerald-500' : 'text-slate-400' %> hover:text-white">
                     Ranking
                 </a>
             </nav>

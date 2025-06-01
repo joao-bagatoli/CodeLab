@@ -34,6 +34,11 @@ app.use(session({
   cookie: { secure: false } // true if it's using https
 }));
 
+app.use((req, res, next) => {
+    res.locals.currentPath = req.path;
+    next();
+});
+
 app.use('/', indexRouter);
 app.use('/challenges', challengesRouter);
 app.use('/my-challenges', myChallengesRouter);
