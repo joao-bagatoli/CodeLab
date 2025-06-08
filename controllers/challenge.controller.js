@@ -65,9 +65,10 @@ class ChallengeController {
         try {
             const id = req.params.id;
             const challengeDetails = await challengeService.getChallengeDetailsAsync(id);
-            return res.render('challengeDetails', { user, challengeDetails, error: null });
+            const initialCode = 'function() {\n // seu código aqui \n}';
+            return res.render('challengeDetails', { user, challengeDetails, initialCode, error: null });
         } catch {
-            return res.render('challengeDetails', { user, challengeDetails: [], error: 'Erro ao carregar detalhes do desafio' });
+            return res.render('challengeDetails', { user, challengeDetails: [], initialCode: null, error: 'Erro ao carregar detalhes do desafio' });
         }
     }
 }

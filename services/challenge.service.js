@@ -34,6 +34,7 @@ class ChallengeService {
             SELECT c.*, cat.category_name
             FROM challenges c
             INNER JOIN categories cat ON c.category_id = cat.category_id
+            WHERE c.challenge_id = ?
         `;
         const [challengeDetails] = await connection.query(query, [challengeId]);
         return challengeDetails.length ? challengeDetails[0] : null;
