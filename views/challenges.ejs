@@ -43,7 +43,7 @@
                 Difícil
             </button>
         </div>
-        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div id="challenges" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             <% challenges.forEach(challenge => { %>
                 <a href="/challenges/<%= challenge.challenge_id %>" class="challenge-card rounded-lg border shadow-sm bg-slate-900 text-white" 
                     data-title="<%= challenge.challenge_title.toLowerCase() %>" 
@@ -51,8 +51,8 @@
                     data-difficulty="<%= challenge.challenge_difficulty.toLowerCase() %>">
                     <div class="flex flex-col space-y-1.5 p-6 pb-3">
                         <div class="flex items-center justify-between">
-                            <span class="badge <%=
-                                challenge.challenge_difficulty === 'easy' 
+                            <span data-difficulty="<%= challenge.challenge_difficulty.toLowerCase() %>" 
+                                class="badge <%=challenge.challenge_difficulty === 'easy' 
                                 ? 'bg-green-600 hover:bg-green-700'
                                 : challenge.challenge_difficulty === 'medium'
                                     ? 'bg-yellow-600 hover:bg-yellow-700'
