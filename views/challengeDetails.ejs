@@ -71,37 +71,52 @@
         <div class="grid gap-8 lg:grid-cols-2">
             <div class="space-y-6">
                 <div class="mt-6 space-y-6">
+                    <% if (error) { %> 
+                        <div role="alert" class="alert alert-error">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                            <span><%= error %></span>
+                        </div>
+                    <% } %>
+
+                    <% if (submitResult) { %>
+                        <div role="alert" class="alert <%= submitResult.isCorrect ? 'alert-success' : 'alert-error' %>">
+                            <i class="fa-solid <%= submitResult.isCorrect ? 'fa-circle-check' : 'fa-circle-xmark' %>"></i>
+                            <span><%= submitResult.message %></span>
+                        </div>
+                    <% } %>
                     <div class="space-y-4">
                         <p><%= challengeDetails.challenge_description %></p>
                     </div>
                 </div>
             </div>
             <div class="space-y-4">
-                <div class="flex items-center justify-between">
-                    <select class="select border-slate-700 bg-slate-800 text-white w-1/4">
-                        <option value="javascript">JavaScript</option>
-                        <option value="csharp">C#</option>
-                        <option value="python">Python</option>
-                    </select>
-                    <div class="flex gap-2">
-                        <button class="btn bg-slate-800 border border-slate-700 text-white hover:bg-slate-700">
-                            <i class="fa-solid fa-play"></i>
-                            Executar
-                        </button>
-                        <button class="btn bg-emerald-600 text-white hover:bg-emerald-700">
-                            <i class="fa-solid fa-paper-plane"></i>
-                            Solucionar
-                        </button>
+                <form action="/challenges/<%= challengeDetails.challenge_id %>/submit" method="post">
+                    <div class="flex items-center justify-between">
+                        <select class="select border-slate-700 bg-slate-800 text-white w-1/4" name="language">
+                            <option value="javascript">JavaScript</option>
+                            <option value="csharp">C#</option>
+                            <option value="python">Python</option>
+                        </select>
+                        <div class="flex gap-2">
+                            <!-- <button class="btn bg-slate-800 border border-slate-700 text-white hover:bg-slate-700">
+                                <i class="fa-solid fa-play"></i>
+                                Executar
+                            </button> -->
+                            <button type="submit" class="btn bg-emerald-600 text-white hover:bg-emerald-700">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                Solucionar
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="h-[600px] rounded-md border border-slate-700 bg-slate-900 p-4">
-                    <pre class="h-full overflow-auto">
-                        <code class="font-mono text-sm text-slate-300 h-full flex">
-                            <textarea class="textarea h-full w-full resize-none bg-transparent text-slate-300 focus:outline-none p-0" 
-                                spellcheck="false" name=""><%= initialCode %></textarea>
-                        </code>
-                    </pre>
-                </div>
+                    <div class="h-[600px] rounded-md border border-slate-700 bg-slate-900 p-4">
+                        <pre class="h-full overflow-auto">
+                            <code class="font-mono text-sm text-slate-300 h-full flex">
+                                <textarea class="textarea h-full w-full resize-none bg-transparent text-slate-300 focus:outline-none p-0" 
+                                    spellcheck="false" name="code"><%= initialCode %></textarea>
+                            </code>
+                        </pre>
+                    </div>
+                </form>
             </div>
         </div>
     </main>

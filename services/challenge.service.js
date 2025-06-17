@@ -39,6 +39,12 @@ class ChallengeService {
         const [challengeDetails] = await connection.query(query, [challengeId]);
         return challengeDetails.length ? challengeDetails[0] : null;
     }
+
+    async saveSubmissionAsync(challengeId, userId, code, score) {
+        const connection = await global.db.connectDbAsync();
+        const query = "INSERT INTO submission (challenge_id, user_id, submission_code, submission_score, submited_at) VALUES (?,?,?,?,NOW());";
+        await connection.query(query, [challengeId, userId, code, score]);
+    }
 }
 
 module.exports = new ChallengeService();

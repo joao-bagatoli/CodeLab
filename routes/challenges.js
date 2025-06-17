@@ -7,4 +7,6 @@ router.get('/', requireLogin, controller.getChallenges);
 
 router.get('/:id', requireLogin, controller.getChallengeDetails);
 
+router.post('/:id/submit', requireLogin, controller.submitChallenge);
+
 module.exports = router;
