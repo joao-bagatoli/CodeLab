@@ -1,7 +1,7 @@
 jest.mock('nodemailer');
 
 const nodemailer = require('nodemailer');
-const emailService = require('../../utils/emailService');
+const emailService = require('../utils/emailService');
 
 describe('EmailService', () => {
   it('deve enviar e-mail de recuperação corretamente', async () => {

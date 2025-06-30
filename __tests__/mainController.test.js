@@ -1,9 +1,9 @@
-const mainController = require('../../controllers/main.controller');
-const mainService = require('../../services/main.service');
-const emailService = require('../../utils/emailService');
+const mainController = require('../controllers/main.controller');
+const mainService = require('../services/main.service');
+const emailService = require('../utils/emailService');
 
-jest.mock('../../services/main.service');
-jest.mock('../../utils/emailService');
+jest.mock('../services/main.service');
+jest.mock('../utils/emailService');
 
 describe('mainController.requestPasswordReset', () => {
   it('deve enviar link de redefinição quando email for válido', async () => {
