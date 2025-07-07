@@ -12,7 +12,7 @@ class ChallengeService {
 
     async addChallengeAsync(challenge, user) {
         const connection = await global.db.connectDbAsync();
-        const query = "INSERT INTO challenges (challenge_title, challenge_description, challenge_difficulty, category_id, created_by, created_at) VALUES (?,?,?,?,?,NOW());";
+        const query = "INSERT INTO challenges (challenge_title, challenge_description, challenge_difficulty, category_id, created_by) VALUES (?,?,?,?,?);";
         await connection.query(query, [challenge.title, challenge.description, challenge.difficulty, challenge.category, user.id]);
     }
 
